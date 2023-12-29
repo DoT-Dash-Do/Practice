@@ -4,6 +4,7 @@ import taskRouter from "./routes/task.js";
 import { connectDb } from "./data/database.js";
 import { config } from "dotenv";
 import cookieParser from "cookie-parser";
+import { errormiddleware } from "./middlewares/error.js";
 export const app = express();
 config({
     path:"./data/config.env",
@@ -18,3 +19,5 @@ connectDb();
 app.get("/",(req,res)=>{
     res.send("nice working");
 });
+
+app.use(errormiddleware);
