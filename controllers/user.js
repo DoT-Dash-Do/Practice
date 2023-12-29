@@ -30,19 +30,11 @@ export  const login = async(req,res,next)=>{
     sendCookie(user,res,"Logged",201);
 };
 
-export const getMyProfile = async(req,res)=>{
-    const id="myid";
-    const {token} = req.cookies;
-    if(!token)
-        return res.status(404).json({
-            success:false,
-            message: "No login detected"
-        });
-    const decoded = jwt.verify(token,process.env.JWT_SECRET);
-    const user = await Users.findById(decoded._id);
+export const getMyProfile = (req,res)=>{
+    
     res.status(200).json({
         success: true,
-        user,
+        user:req.user,
     });
 };
 
