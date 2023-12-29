@@ -57,3 +57,10 @@ export const register = async(req,res)=>{
 
     sendCookie(user,res,"registed successfully",201);
 };
+
+export const logout = (req,res) => {
+    res.status(200).cookie("token","",{ expires: parseInt(new Date(Date.now)) }).json({
+        success: true,
+        user: req.user,
+    })
+}

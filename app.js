@@ -1,5 +1,6 @@
 import express from "express";
 import userRouter from "./routes/user.js";
+import taskRouter from "./routes/task.js";
 import { connectDb } from "./data/database.js";
 import { config } from "dotenv";
 import cookieParser from "cookie-parser";
@@ -10,7 +11,7 @@ config({
 app.use(cookieParser());
 app.use(express.json());
 app.use("/api/v1/UserFn",userRouter);
-const router = express.Router();
+app.use("/api/v1/TaskFn",taskRouter);
 
 connectDb();
 
