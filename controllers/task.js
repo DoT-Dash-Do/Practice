@@ -2,7 +2,8 @@ import Task from "../models/task.js";
 import ErrorHandler from "../middlewares/error.js";
 
 export const newTask = async (req,res,next)=>{
-    const {title,description} = req.body;
+    try {
+        const {title,description} = req.body;
     await Task.create({
         title,
         description,
@@ -13,9 +14,13 @@ export const newTask = async (req,res,next)=>{
         success:true,
         message: "Task added successfully"
     });
+    } catch (error) {
+       next(error); 
+    }
 };
 export const updateTask = async(req,res,next) => {
-    const {id} = req.params;
+    try {
+        const {id} = req.params;
     const task = await Task.findById(id);
     task.isCompleted = !task.isCompleted;
     if(!task) 
@@ -26,22 +31,30 @@ export const updateTask = async(req,res,next) => {
         success:true,
         message:"Task Updated",
     });
+    } catch (error) {
+       next(error); 
+    }
 };
 
 export const deleteTask = async(req,res,next) => {
-    const {id} = req.params;
+    try {
+        const {id} = req.params;
     const task = await Task.findById(id);
 
     if(!task) 
-    return next(new ErrorHandler("Task not Found",404));
+        return next(new ErrorHandler("Task not Found",404));
     await task.deleteOne();
     res.status(200).json({
         success:true,
         message:"Task deleted"
     });
+    } catch (error) {
+       next(error);
+    }
 };
 export const allTasks = async(req,res,next)=>{
-    const userid = req.user._id;
+    try {
+        const userid = req.user._id;
 
     const tasks = await Task.find({user:userid});
 
@@ -49,4 +62,7 @@ export const allTasks = async(req,res,next)=>{
         success:true,
         tasks
     });
+    } catch (error) {
+       next(error); 
+    }
 };
